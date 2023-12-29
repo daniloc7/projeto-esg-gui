@@ -1,0 +1,4 @@
+enum ProjectStatus {
+  iniciado,
+  finalizado,
+}
