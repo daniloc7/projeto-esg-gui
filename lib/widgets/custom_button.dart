@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:projeto/utils/pallete.dart';
 
 class CustomButton extends StatelessWidget {
   final String name;
@@ -26,12 +27,13 @@ class CustomButton extends StatelessWidget {
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
-          Colors.greenAccent,
+          mycolor,
+          // Colors.greenAccent,
         ),
       ),
       child: Text(
         name,
-        style: const TextStyle(fontSize: 12, color: Colors.black87),
+        style: const TextStyle(fontSize: 12, color: Colors.white),
       ),
     );
   }

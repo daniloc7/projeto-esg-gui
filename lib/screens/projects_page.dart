@@ -8,7 +8,10 @@ class ProjectsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(), body: body());
+    return Scaffold(
+        appBar:
+            AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
+        body: body());
   }
 
   Widget body() {
