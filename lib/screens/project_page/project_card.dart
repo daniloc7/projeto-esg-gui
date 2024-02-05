@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/enums/project_status.dart';
-import 'package:projeto/utils/pallete.dart';
 
 class ProjectCard extends StatelessWidget {
   final String name;
@@ -20,7 +19,7 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       // decoration: BoxDecoration(
       //   border: Border.all(),
       //   borderRadius: BorderRadius.circular(15.0),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class IndicatorForm extends StatefulWidget {
+  const IndicatorForm({super.key});
+
   @override
   State<IndicatorForm> createState() => _IndicatorFormState();
 }

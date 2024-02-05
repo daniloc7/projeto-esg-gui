@@ -1,7 +1,7 @@
 import 'package:projeto/enums/project_status.dart';
 
 class ProjectModel {
-  final int id;
+  final String id;
   late String name;
   late String description;
   late DateTime initDate;

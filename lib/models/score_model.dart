@@ -1,40 +1,46 @@
 //implementar ponderacao
-class Score {
-  final int id;
-  late String name;
-  late int totalFactors;
-  late double weight;
-  late double score;
-  late bool isAccepted;
 
-  Score({
+class ScoreModel {
+  final String id;
+  final String fkIdProject;
+  late String name;
+  late double? weight;
+  late double? score;
+  late bool? isAccepted;
+  // late int? totalFactors;
+  // late List<FactorModel>? factorModel;
+
+  ScoreModel({
     required this.id,
+    required this.fkIdProject,
     required this.name,
-    required this.totalFactors,
-    required this.weight,
-    required this.score,
-    required this.isAccepted,
+    // this.totalFactors,
+    this.weight,
+    this.score,
+    this.isAccepted,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'fkIdProject': fkIdProject,
       'name': name,
-      'totalFactors': totalFactors,
+      // 'totalFactors': totalFactors,
       'weight': weight,
-      'score': score,
-      'isAccepted': isAccepted,
+      // 'score': score,
+      // 'isAccepted': isAccepted,
     };
   }
 
-  factory Score.fromJson(Map<String, dynamic> json) {
-    return Score(
+  factory ScoreModel.fromJson(Map<String, dynamic> json) {
+    return ScoreModel(
       id: json['id'],
+      fkIdProject: json['fkIdProject'],
       name: json['name'],
-      totalFactors: json['totalFactors'],
+      // totalFactors: json['totalFactors'],
       weight: json['weight'],
-      score: json['score'],
-      isAccepted: json['isAccepted'],
+      // score: json['score'],
+      // isAccepted: json['isAccepted'],
     );
   }
 

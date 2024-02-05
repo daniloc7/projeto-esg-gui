@@ -1,31 +1,33 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:projeto/screens/indicator_form.dart';
-import 'package:projeto/widgets/custom_icon_button.dart';
+import 'package:projeto/screens/indicator_page/indicator_form.dart';
 
-import 'package:projeto/widgets/indicator.dart';
+import 'package:projeto/screens/indicator_page/indicator.dart';
 
-import '../models/factor_model.dart';
-import '../models/indicator_model.dart';
-import '../utils/get_color_checkbox.dart';
+import '../../models/factor_model.dart';
+import '../../models/indicator_model.dart';
+import '../../utils/get_color_checkbox.dart';
 
 List<IndicatorModel> indicators = [
   IndicatorModel(
-      id: 0,
+      id: "0",
+      fkIdFactor: '1',
       name: 'Indicador 1',
       description: 'first',
       essential: false,
       weight: 0.1,
       isMarked: false),
   IndicatorModel(
-      id: 1,
+      id: "1",
+      fkIdFactor: '1',
       name: 'Indicador 2',
       description: 'first',
       essential: false,
       weight: 0.1,
       isMarked: false),
   IndicatorModel(
-      id: 2,
+      id: "2",
+      fkIdFactor: '1',
       name: 'Indicador 3',
       description: 'first',
       essential: false,
@@ -130,7 +132,7 @@ class _FactorState extends State<Factor> {
                 },
               ),
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // CustomIconButton(

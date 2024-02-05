@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../models/factor_model.dart';
-import 'factor.dart';
+import '../../models/factor_model.dart';
+import '../factor_page/factor.dart';
 
 List<FactorModel> factors = [
   FactorModel(
-    id: 0,
+    id: "0",
     weight: 0.5,
     name: 'Fator 1',
     markedIndicators: 15,
     totalIndicators: 20,
+    fkIdScore: '1',
   ),
   FactorModel(
-    id: 1,
+    id: "1",
     name: 'Fator 2',
     markedIndicators: 15,
     totalIndicators: 20,
     weight: 0.5,
+    fkIdScore: '1',
   ),
   FactorModel(
-    id: 2,
+    id: "2",
     weight: .3,
     name: 'Fator 3',
     markedIndicators: 15,
     totalIndicators: 20,
+    fkIdScore: '1',
   ),
 ];
 

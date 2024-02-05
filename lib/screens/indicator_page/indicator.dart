@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/indicator_model.dart';
-import '../utils/get_color_checkbox.dart';
+import '../../models/indicator_model.dart';
+import '../../utils/get_color_checkbox.dart';
 
 class Indicator extends StatefulWidget {
   // final String name;

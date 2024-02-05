@@ -51,9 +51,9 @@ import 'package:cross_scroll/cross_scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:projeto/widgets/custom_button.dart';
-import 'package:projeto/widgets/score.dart';
+import 'package:projeto/screens/score_page/score.dart';
 
-import '../widgets/custom_list_tile.dart';
+import '../../widgets/custom_list_tile.dart';
 
 class ScorePage extends StatefulWidget {
   const ScorePage({super.key});
