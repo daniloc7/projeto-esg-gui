@@ -32,8 +32,14 @@ class ScoreController implements DatabaseInterface {
     //};
     try {
       await databaseReference
-          .collection("$collection/$parent/scores")
-          .add(data);
+          .collection(collection)
+          .add(data)
+          .then((DocumentReference doc) async {
+        await databaseReference
+            .collection(collection)
+            .doc(doc.id)
+            .update({"id": doc.id});
+      });
       return true;
     } catch (e) {
       print(e.toString());

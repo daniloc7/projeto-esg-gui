@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/interfaces/database_interface.dart';
 import 'package:projeto/models/indicator_model.dart';
@@ -80,7 +82,8 @@ class IndicatorController implements DatabaseInterface {
     }
   }
 
-  Future<int> getTotalIndicators(String fkIdFactor) async {
+  //
+  Future<int> getTotalIndicatorsByFactor(String fkIdFactor) async {
     // List<IndicatorModel> _indicatorsFk = [];
     int total = 0;
     try {
@@ -94,5 +97,19 @@ class IndicatorController implements DatabaseInterface {
       print(e.toString());
     }
     return total;
+  }
+
+  Future<double> getTotalWeightByFactor(String fkIdFactor) async {
+    double totalWeight = 0;
+    try {
+      for (var item in indicatorList) {
+        if (item.fkIdFactor == fkIdFactor) {
+          totalWeight += item.weight;
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return totalWeight;
   }
 }

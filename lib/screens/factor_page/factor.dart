@@ -132,9 +132,9 @@ class _FactorState extends State<Factor> {
                 },
               ),
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: const [
                 // CustomIconButton(
                 //   icon: Icons.delete,
                 //   color: Colors.red,

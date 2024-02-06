@@ -19,11 +19,20 @@ class FactorController implements DatabaseInterface {
     }
   }
 
+  // await databaseReference.collection("$collection/$parent/factors").add(data);
   @override
   Future<bool> addOne(String collection, Map<String, dynamic> data,
       {String? parent = ''}) async {
     try {
-      await databaseReference.collection("$collection/$parent").add(data);
+      await databaseReference
+          .collection(collection)
+          .add(data)
+          .then((DocumentReference doc) async {
+        await databaseReference
+            .collection(collection)
+            .doc(doc.id)
+            .update({"id": doc.id});
+      });
       return true;
     } catch (e) {
       print(e.toString());
@@ -69,4 +78,7 @@ class FactorController implements DatabaseInterface {
       print(e.toString());
     }
   }
+
+  // getTotalFactorsByScore(String fkIdScore){}
+  // getTotalWeightByScore(String fkIdScore){}
 }

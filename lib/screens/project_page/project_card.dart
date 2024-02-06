@@ -1,21 +1,23 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/enums/project_status.dart';
 
 class ProjectCard extends StatelessWidget {
   final String name;
-  final String description;
+  late String? description;
   final DateTime initDate;
-  final ProjectStatus status;
-  final double score;
+  late ProjectStatus? status;
+  late double? score;
 
-  const ProjectCard(
+  ProjectCard(
       {super.key,
       required this.name,
-      required this.description,
+      this.description,
       required this.initDate,
-      required this.status,
-      required this.score});
+      this.status,
+      this.score});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class ProjectCard extends StatelessWidget {
                       PieChartSectionData(
                         value: score,
                         color: Colors.blue,
-                        title: '${score.toStringAsFixed(2)}%',
+                        title: '${score?.toStringAsFixed(2)}%',
                         radius: 15,
                         titlePositionPercentageOffset: -1.35,
                         titleStyle: const TextStyle(
@@ -59,7 +61,7 @@ class ProjectCard extends StatelessWidget {
                         ),
                       ),
                       PieChartSectionData(
-                          value: 100 - score,
+                          value: 100 - score!,
                           color: Colors.grey[300]!,
                           radius: 15,
                           showTitle: false),

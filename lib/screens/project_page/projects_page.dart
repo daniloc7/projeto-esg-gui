@@ -3,6 +3,8 @@ import 'package:projeto/controllers/factor_controller.dart';
 import 'package:projeto/controllers/project_controller.dart';
 import 'package:projeto/controllers/score_controller.dart';
 import 'package:projeto/screens/project_page/project_card.dart';
+import 'package:projeto/screens/project_page/register_project.dart';
+import 'package:projeto/widgets/custom_float_button.dart';
 
 import '../../enums/project_status.dart';
 
@@ -47,9 +49,18 @@ class _ProjectsPageState extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
-        body: body());
+      appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
+      body: body(),
+      floatingActionButton: CustomFloatButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const RegisterProjectPage(),
+              ),
+            );
+          },
+          child: const Icon(Icons.add)),
+    );
   }
 
   Widget body() {
