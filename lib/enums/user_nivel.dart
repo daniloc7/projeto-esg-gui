@@ -1,0 +1,4 @@
+enum UserNivel {
+  admin,
+  user,
+}

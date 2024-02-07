@@ -3,21 +3,25 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/enums/project_status.dart';
+import 'package:projeto/models/project_model.dart';
 
 class ProjectCard extends StatelessWidget {
-  final String name;
-  late String? description;
-  final DateTime initDate;
-  late ProjectStatus? status;
-  late double? score;
+  late ProjectModel project;
+  // final String name;
+  // late String? description;
+  // final DateTime initDate;
+  // late ProjectStatus? status;
+  // late double? score;
 
-  ProjectCard(
-      {super.key,
-      required this.name,
-      this.description,
-      required this.initDate,
-      this.status,
-      this.score});
+  ProjectCard({
+    super.key,
+    required this.project,
+    // required this.name,
+    // this.description,
+    // required this.initDate,
+    // this.status,
+    // this.score
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class ProjectCard extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: Text(name),
+              title: Text(project.name),
               hoverColor: Colors.grey,
               // subtitle: Text(
               //   status.name,
@@ -49,9 +53,9 @@ class ProjectCard extends StatelessWidget {
                   PieChartData(
                     sections: [
                       PieChartSectionData(
-                        value: score,
+                        value: project.score,
                         color: Colors.blue,
-                        title: '${score?.toStringAsFixed(2)}%',
+                        title: '${project.score?.toStringAsFixed(2)}%',
                         radius: 15,
                         titlePositionPercentageOffset: -1.35,
                         titleStyle: const TextStyle(
@@ -61,7 +65,7 @@ class ProjectCard extends StatelessWidget {
                         ),
                       ),
                       PieChartSectionData(
-                          value: 100 - score!,
+                          value: 100 - project.score!,
                           color: Colors.grey[300]!,
                           radius: 15,
                           showTitle: false),

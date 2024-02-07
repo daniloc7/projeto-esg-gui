@@ -1,20 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/controllers/factor_controller.dart';
 import 'package:projeto/controllers/project_controller.dart';
 import 'package:projeto/controllers/score_controller.dart';
+import 'package:projeto/models/project_model.dart';
+import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/screens/project_page/project_card.dart';
 import 'package:projeto/screens/project_page/register_project.dart';
 import 'package:projeto/widgets/custom_float_button.dart';
 
 import '../../enums/project_status.dart';
 
+List<ProjectModel> projects = [];
+
 void instaFactor() async {
-  ProjectController projectController = ProjectController();
-  ScoreController scoreController = ScoreController();
-  FactorController factorController = FactorController();
+  ProjectProvider projectProvider = ProjectProvider();
+  // ScoreController scoreController = ScoreController();
+  // FactorController factorController = FactorController();
   //posso transformar um model utilizando um toJson para passar por parametro
-  Map<String, dynamic> projectData = {'name': 'teste', 'weight': 50};
-  projectController.addOne('projects', projectData);
+  Map<String, dynamic> projectData = {
+    'name': 'Projeto A',
+    'description': 'Projeto Teste',
+    'initDate': DateTime.now(),
+    'score': 0
+  };
+
+  // projectProvider.addOne('projects', projectData);
+  await projectProvider.getAll('projects');
+  projects = projectProvider.projectList;
+
   // Map<String, dynamic> scoreData = {
   //   'id': '0',
   //   'name': 'testeScore',
@@ -52,59 +66,63 @@ class _ProjectsPageState extends State<ProjectsPage> {
       appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
       body: body(),
       floatingActionButton: CustomFloatButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const RegisterProjectPage(),
-              ),
-            );
-          },
-          child: const Icon(Icons.add)),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const RegisterProjectPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
   Widget body() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Wrap(
-                  spacing: 50, //coluna
-                  runSpacing: 40, //linha
-                  children: [
-                    ProjectCard(
-                        name: "Projeto 1",
-                        description: "descricao",
-                        initDate: DateTime.now(),
-                        status: ProjectStatus.iniciado,
-                        score: 5.5),
-                    ProjectCard(
-                        name: "Projeto 2",
-                        description: "descricao",
-                        initDate: DateTime.now(),
-                        status: ProjectStatus.iniciado,
-                        score: 5.5),
-                    ProjectCard(
-                        name: "Projeto 3",
-                        description: "descricao",
-                        initDate: DateTime.now(),
-                        status: ProjectStatus.iniciado,
-                        score: 5.5),
-                    ProjectCard(
-                        name: "Projeto 4",
-                        description: "descricao",
-                        initDate: DateTime.now(),
-                        status: ProjectStatus.iniciado,
-                        score: 5.5),
-                  ]),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: projects.length,
+            itemBuilder: (context, index) {
+              ProjectModel pm = projects.elementAt(index);
+              return Wrap(
+                spacing: 50, //coluna
+                runSpacing: 40, //linha
+                children: [
+                  ProjectCard(
+                    project: pm,
+                  ),
+                ],
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
+
+  // Widget body() {
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.vertical,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: [
+  //         Center(
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Wrap(
+  //                 spacing: 50, //coluna
+  //                 runSpacing: 40, //linha
+  //                 children: [
+  //                   FutureBuilder(future: projectProvider().getAll('projects'), builder: (BuildContext context))
+  //                 ]),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

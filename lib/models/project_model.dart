@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/enums/project_status.dart';
 
 class ProjectModel {
@@ -24,8 +25,10 @@ class ProjectModel {
         id: json['id'],
         name: json['name'],
         description: json['description'],
-        initDate: json['initDate'],
-        finalDate: json['finalDate'],
+        initDate: (json['initDate'] as Timestamp).toDate(),
+        finalDate: json['finalDate'] == null
+            ? null
+            : (json['finalDate'] as Timestamp).toDate(),
         status: json['status'],
         score: json['score']);
   }

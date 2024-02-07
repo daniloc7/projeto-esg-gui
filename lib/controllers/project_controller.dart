@@ -67,6 +67,7 @@ class ProjectController implements DatabaseInterface {
         for (var docSnapshot in querySnapshot.docs) {
           projectList.add(ProjectModel.fromJson(docSnapshot.data()));
         }
+        return projectList;
       },
       onError: (e) => print("Erro para buscar os elementos: $e"),
     );

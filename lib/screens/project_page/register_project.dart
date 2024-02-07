@@ -152,27 +152,33 @@ class RegisterProjectPage extends StatefulWidget {
   State<RegisterProjectPage> createState() => _RegisterProjectPageState();
 }
 
+// ProjectCard(
+//     name: "Projeto 2",
+//     description: "descricao",
+//     initDate: DateTime.now(),
+//     status: ProjectStatus.iniciado,
+//     score: 5.5),
+
 class _RegisterProjectPageState extends State<RegisterProjectPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nomeCompletoController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _nivelAcessoController = TextEditingController();
-  final _senhaAleatoriaController = TextEditingController();
+  final _name = TextEditingController();
+  final _description = TextEditingController();
+  final _status = TextEditingController();
+  final _score = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(45),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
+          padding: const EdgeInsets.fromLTRB(
               100, 10, 100, 0), // Adicione o espaço no topo aqui
           child: AppBar(
             primary: false,
             centerTitle: true,
             toolbarHeight: 40,
-            title: Text('Criar Novo Projeto'),
+            title: const Text('Criar Novo Projeto'),
           ),
         ),
       ),
@@ -184,80 +190,35 @@ class _RegisterProjectPageState extends State<RegisterProjectPage> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  controller: _nomeCompletoController,
-                  decoration: InputDecoration(labelText: 'Nome Completo'),
+                  controller: _name,
+                  decoration:
+                      const InputDecoration(labelText: 'Nome do Projeto'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Nome completo é obrigatório';
+                      return 'Esse campo é obrigatório';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextFormField(
-                  controller: _telefoneController,
-                  decoration: InputDecoration(labelText: 'Telefone'),
+                  controller: _description,
+                  decoration: const InputDecoration(labelText: 'Descrição'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Telefone é obrigatório';
+                      return 'Esse campo é obrigatório';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email é obrigatório';
-                    }
-                    if (!RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+")
-                        .hasMatch(value)) {
-                      return 'Email inválido';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _nivelAcessoController,
-                  decoration: InputDecoration(labelText: 'Nível de Acesso'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Nível de acesso é obrigatório';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.0),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        controller: _senhaAleatoriaController,
-                        decoration:
-                            InputDecoration(labelText: 'Senha Aleatória'),
-                        readOnly: true,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.vpn_key),
-                      onPressed: () {
-                        // Gerar nova senha aleatória
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       // Criar novo usuário
                     }
                   },
-                  child: Text('Criar Usuário'),
+                  child: const Text('Criar Projeto'),
                 ),
               ],
             ),
