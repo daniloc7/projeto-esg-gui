@@ -62,7 +62,7 @@ class ProjectController implements DatabaseInterface {
 
   @override
   Future getAll(String collection) async {
-    return FirebaseFirestore.instance.collection(collection).get().then(
+    return databaseReference.collection(collection).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
           projectList.add(ProjectModel.fromJson(docSnapshot.data()));
@@ -82,7 +82,9 @@ class ProjectController implements DatabaseInterface {
   @override
   Future getOne(String collection, String doc) async {
     try {
-      return FirebaseFirestore.instance.collection(collection).doc(doc).get();
+      final data =
+          await databaseReference.collection(collection).doc(doc).get();
+      return ProjectModel.fromJson(data.data() as Map<String, dynamic>);
     } catch (e) {
       print(e.toString());
     }

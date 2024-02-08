@@ -8,43 +8,9 @@ import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/screens/project_page/project_card.dart';
 import 'package:projeto/screens/project_page/register_project.dart';
 import 'package:projeto/widgets/custom_float_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../enums/project_status.dart';
-
-List<ProjectModel> projects = [];
-
-void instaFactor() async {
-  ProjectProvider projectProvider = ProjectProvider();
-  // ScoreController scoreController = ScoreController();
-  // FactorController factorController = FactorController();
-  //posso transformar um model utilizando um toJson para passar por parametro
-  Map<String, dynamic> projectData = {
-    'name': 'Projeto A',
-    'description': 'Projeto Teste',
-    'initDate': DateTime.now(),
-    'score': 0
-  };
-
-  // projectProvider.addOne('projects', projectData);
-  await projectProvider.getAll('projects');
-  projects = projectProvider.projectList;
-
-  // Map<String, dynamic> scoreData = {
-  //   'id': '0',
-  //   'name': 'testeScore',
-  //   'weight': 50
-  // };
-  // scoreController.addOne('projects', scoreData, parent: 'yfKi0VxhzIYZyq1yr032');
-
-  // DocumentSnapshot result =
-  //     await ScoreController.getScore('woLaul3Aj1dAQrIAXRtH');
-  // await ScoreController.addScore('0', 'teste', 0.5);
-  // print(result.first.);
-  // await FactorController.addFactor('ujBBRP3bN45BjrLypYKs', 'teste', 0.5);
-  // print(result.data().toString());
-  // ScoreModel scoreModel = ScoreController.getScore('0') as ScoreModel;
-  // await FactorController.addFactor(scoreModel, 'fator1', 0.5);
-}
 
 class ProjectsPage extends StatefulWidget {
   const ProjectsPage({super.key});
@@ -54,9 +20,26 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPageState extends State<ProjectsPage> {
+  List<ProjectModel> projects = [];
+  ProjectProvider projectProvider = ProjectProvider();
+
+  void instaFactor() async {
+    //posso transformar um model utilizando um toJson para passar por parametro
+    // Map<String, dynamic> projectData = {
+    //   'name': 'Projeto A',
+    //   'description': 'Projeto Teste',
+    //   'initDate': DateTime.now(),
+    //   'score': 0,
+    //   'status': ProjectStatus.iniciado
+    // };
+
+    await projectProvider.getAll('projects');
+  }
+
   @override
   void initState() {
     super.initState();
+    projectProvider = Provider.of<ProjectProvider>(context, listen: false);
     instaFactor();
   }
 
@@ -79,50 +62,36 @@ class _ProjectsPageState extends State<ProjectsPage> {
   }
 
   Widget body() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (context, index) {
-              ProjectModel pm = projects.elementAt(index);
-              return Wrap(
-                spacing: 50, //coluna
-                runSpacing: 40, //linha
-                children: [
-                  ProjectCard(
-                    project: pm,
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Consumer<ProjectProvider>(
+              builder: (context, projectProvider, _) {
+                projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
+                projects = projectProvider.projectList;
+                return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: projects.isEmpty
+                        ? const Center(child: CircularProgressIndicator())
+                        : Wrap(
+                            //verificar se aq n fica melhor inkwell
+                            spacing: 50, //coluna
+                            runSpacing: 40, //linha
+                            children: projects
+                                .map((project) => ProjectCard(
+                                      name: project.name,
+                                      initDate: project.initDate,
+                                      description: project.description,
+                                      score: project.score,
+                                      status: ProjectStatus.iniciado,
+                                    ))
+                                .toList(),
+                          ));
+              },
+            ),
+          ]),
     );
   }
-
-  // Widget body() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.vertical,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.stretch,
-  //       children: [
-  //         Center(
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: Wrap(
-  //                 spacing: 50, //coluna
-  //                 runSpacing: 40, //linha
-  //                 children: [
-  //                   FutureBuilder(future: projectProvider().getAll('projects'), builder: (BuildContext context))
-  //                 ]),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

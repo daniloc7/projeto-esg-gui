@@ -10,6 +10,7 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
   ProjectController _projectController = ProjectController();
 
   List<ProjectModel> get projectList => _projectModelList;
+  ProjectModel get projectModel => _projectModel;
 
   // Future<void> getProjects(String userId)
 
@@ -34,8 +35,8 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
 
   @override
   Future getAll(String collection) async {
+    _projectModelList.clear();
     _projectModelList = await _projectController.getAll(collection);
-    print("project00" + _projectModelList.length.toString());
     notifyListeners();
   }
 
@@ -47,7 +48,7 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
 
   @override
   Future getOne(String collection, String doc) async {
-    _projectController.getOne(collection, doc);
+    _projectModel = await _projectController.getOne(collection, doc);
     notifyListeners();
   }
 }
