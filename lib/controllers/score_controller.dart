@@ -80,7 +80,9 @@ class ScoreController implements DatabaseInterface {
   @override
   Future getOne(String collection, String doc) async {
     try {
-      return FirebaseFirestore.instance.collection(collection).doc(doc).get();
+      final data =
+          await databaseReference.collection(collection).doc(doc).get();
+      return ScoreModel.fromJson(data.data() as Map<String, dynamic>);
     } catch (e) {
       print(e.toString());
     }

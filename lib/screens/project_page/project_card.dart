@@ -28,7 +28,7 @@ class ProjectCard extends StatefulWidget {
   State<ProjectCard> createState() => _ProjectCardState();
 }
 
-//tenho q instanciar um projectModel aqui
+//tenho q instanciar um projectModel aqui para usar o projectProvider
 class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {

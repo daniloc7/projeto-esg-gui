@@ -21,8 +21,11 @@ class ProjectsPage extends StatefulWidget {
 
 class _ProjectsPageState extends State<ProjectsPage> {
   List<ProjectModel> projects = [];
+  List<ProjectModel> projects2 = [];
   ProjectProvider projectProvider = ProjectProvider();
-
+  ProjectController projectController = ProjectController();
+  final TextEditingController _controller = TextEditingController();
+  String searchTerm = '';
   void instaFactor() async {
     //posso transformar um model utilizando um toJson para passar por parametro
     // Map<String, dynamic> projectData = {
@@ -32,8 +35,12 @@ class _ProjectsPageState extends State<ProjectsPage> {
     //   'score': 0,
     //   'status': ProjectStatus.iniciado
     // };
-
     await projectProvider.getAll('projects');
+    projects = projectProvider.projectList;
+    await projectProvider.getByNameOrDescription(
+        'projects', 'Projeto A', projects);
+    projects2 = projectProvider.projectList;
+    print('projetos' + projects2.length.toString());
   }
 
   @override
@@ -46,7 +53,8 @@ class _ProjectsPageState extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
+      appBar: AppBar(toolbarHeight: 10),
+      // appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.05),
       body: body(),
       floatingActionButton: CustomFloatButton(
         onPressed: () {
@@ -64,34 +72,79 @@ class _ProjectsPageState extends State<ProjectsPage> {
   Widget body() {
     return SingleChildScrollView(
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Consumer<ProjectProvider>(
-              builder: (context, projectProvider, _) {
-                projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
-                projects = projectProvider.projectList;
-                return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: projects.isEmpty
-                        ? const Center(child: CircularProgressIndicator())
-                        : Wrap(
-                            //verificar se aq n fica melhor inkwell
-                            spacing: 50, //coluna
-                            runSpacing: 40, //linha
-                            children: projects
-                                .map((project) => ProjectCard(
-                                      name: project.name,
-                                      initDate: project.initDate,
-                                      description: project.description,
-                                      score: project.score,
-                                      status: ProjectStatus.iniciado,
-                                    ))
-                                .toList(),
-                          ));
-              },
+        children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(300, 100, 300, 0),
+              child: Text('tes')),
+          // child: searchBar()),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(150, 40, 150, 0),
+            child: SizedBox(
+              // height: ,
+              width: 1500,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Consumer<ProjectProvider>(
+                      builder: (context, projectProvider, _) {
+                        // projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
+                        // searchTerm == ''
+                        //     ? projects = projectProvider.projectList
+                        //     : projects = projects;
+                        projects = projectProvider.projectList;
+
+                        return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: projects.isEmpty
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : Wrap(
+                                    //verificar se aq n fica melhor inkwell
+                                    spacing: 50, //coluna
+                                    runSpacing: 40, //linha
+                                    children: projects
+                                        .map((project) => ProjectCard(
+                                              name: project.name,
+                                              initDate: project.initDate,
+                                              description: project.description,
+                                              score: project.score,
+                                              status: ProjectStatus.iniciado,
+                                            ))
+                                        .toList(),
+                                  ));
+                      },
+                    ),
+                  ]),
             ),
-          ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget searchBar() {
+    return TextField(
+      controller: _controller,
+      decoration: InputDecoration(
+        labelText: 'Pesquisar',
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            _controller.clear();
+          },
+        ),
+      ),
+      onSubmitted: (value) async {
+        setState(() {
+          _controller.text = '';
+        });
+        // projects = await projectProvider.getByNameOrDescription(
+        //     'projects', searchTerm);
+        // print('leng' + projects.length.toString());
+        searchTerm = value;
+      },
     );
   }
 }

@@ -90,7 +90,20 @@ class ProjectController implements DatabaseInterface {
     }
   }
 
-  // static Future addProject(ProjectModel project) {
-  //   databaseReference.collection(collectionPath).add(data);
-  // }
+  Future getByNameOrDescription(
+      String collection, String searchTerm, List<ProjectModel> list) async {
+    List<ProjectModel> _newList = [];
+    print('data' + list.length.toString());
+    try {
+      for (var item in list) {
+        print(item.name);
+        if (item.name == searchTerm || item.description == searchTerm) {
+          _newList.add(item);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return _newList;
+  }
 }

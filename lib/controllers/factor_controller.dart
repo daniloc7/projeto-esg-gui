@@ -73,7 +73,9 @@ class FactorController implements DatabaseInterface {
   @override
   Future getOne(String collection, String doc) async {
     try {
-      return FirebaseFirestore.instance.collection(collection).doc(doc).get();
+      final data =
+          await databaseReference.collection(collection).doc(doc).get();
+      return FactorModel.fromJson(data.data() as Map<String, dynamic>);
     } catch (e) {
       print(e.toString());
     }

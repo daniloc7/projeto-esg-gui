@@ -51,4 +51,11 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
     _projectModel = await _projectController.getOne(collection, doc);
     notifyListeners();
   }
+
+  Future getByNameOrDescription(
+      String collection, String searchTerm, List<ProjectModel> list) async {
+    _projectModelList = await _projectController.getByNameOrDescription(
+        collection, searchTerm, list);
+    notifyListeners();
+  }
 }

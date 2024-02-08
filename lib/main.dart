@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:projeto/firebase_options.dart';
 import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/screens/project_page/projects_page.dart';
+import 'package:projeto/screens/score_page/score.dart';
+import 'package:projeto/screens/score_page/score_page.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:provider/provider.dart';
 
@@ -38,24 +40,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primaryColor: Colors.white38, primarySwatch: mycolor),
         routes: {
           '/': (context) => const ProjectsPage(),
+          // '/': (context) => const ProjectsPage(),
         },
         // home: CadastrarMaterial(),
       ),
     );
   }
 }
-
-//     return MaterialApp(
-//       title: 'Projeto ESG',
-//       theme: ThemeData(primaryColor: Colors.white38, primarySwatch: mycolor),
-//       // home: const TestPage(),
-//       routes: {
-//         '/': (context) => const ProjectsPage(),
-//         // '/user':(context)=> const
-//         // '/': (context) => const ScorePage(),
-//         // '/': (context) => const ScorePage(),
-//         // '/indicator_form': (context) => IndicatorForm(),
-//       },
-//     );
-//   }
-// }
