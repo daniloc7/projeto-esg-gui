@@ -98,6 +98,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   child: Image.network(
                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYf6uUYcGcQ8e9neDNRXMUUXzmUPuUJtel5g&usqp=CAU',
                     fit: BoxFit.cover,
+                    // fit: BoxFit.cover,
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) {

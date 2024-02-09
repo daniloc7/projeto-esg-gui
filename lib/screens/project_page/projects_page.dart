@@ -124,6 +124,13 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 projects = projectProvider.projectList;
 
                 return Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(100, 50, 100, 100),
                       child: projects.isEmpty
