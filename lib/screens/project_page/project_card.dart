@@ -51,9 +51,8 @@ class _ProjectCardState extends State<ProjectCard> {
               children: [
                 ListTile(
                   title: Text(widget.name),
-                  hoverColor: Colors.grey,
+                  hoverColor: Colors.white,
                   // subtitle: Text(
-                  //   status.name,
                   //   style: const TextStyle(color: Colors.blue),
                   // ),
                   trailing: SizedBox(

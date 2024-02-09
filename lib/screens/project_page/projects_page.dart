@@ -25,6 +25,8 @@ class _ProjectsPageState extends State<ProjectsPage> {
   ProjectProvider projectProvider = ProjectProvider();
   ProjectController projectController = ProjectController();
   final TextEditingController _controller = TextEditingController();
+  bool isButton1Pressed = false;
+  bool isButton2Pressed = false;
   String searchTerm = '';
   void instaFactor() async {
     //posso transformar um model utilizando um toJson para passar por parametro
@@ -53,7 +55,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 10),
+      // appBar: AppBar(toolbarHeight: 50),
       // appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.05),
       body: body(),
       floatingActionButton: CustomFloatButton(
@@ -70,55 +72,81 @@ class _ProjectsPageState extends State<ProjectsPage> {
   }
 
   Widget body() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(300, 100, 300, 0),
-              child: Text('tes')),
-          // child: searchBar()),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(150, 40, 150, 0),
-            child: SizedBox(
-              // height: ,
-              width: 1500,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Consumer<ProjectProvider>(
-                      builder: (context, projectProvider, _) {
-                        // projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
-                        // searchTerm == ''
-                        //     ? projects = projectProvider.projectList
-                        //     : projects = projects;
-                        projects = projectProvider.projectList;
-
-                        return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: projects.isEmpty
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : Wrap(
-                                    //verificar se aq n fica melhor inkwell
-                                    spacing: 50, //coluna
-                                    runSpacing: 40, //linha
-                                    children: projects
-                                        .map((project) => ProjectCard(
-                                              name: project.name,
-                                              initDate: project.initDate,
-                                              description: project.description,
-                                              score: project.score,
-                                              status: ProjectStatus.iniciado,
-                                            ))
-                                        .toList(),
-                                  ));
-                      },
+    return Container(
+      color: Colors.grey[200],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(200, 100, 200, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isButton1Pressed = !isButton1Pressed;
+                      });
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        isButton1Pressed ? Colors.white54 : Colors.white,
+                      ),
                     ),
-                  ]),
+                    child: Text('Em progresso'),
+                  ),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isButton2Pressed = !isButton2Pressed;
+                      });
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        isButton2Pressed ? Colors.white54 : Colors.white,
+                      ),
+                    ),
+                    child: Text('Finalizados'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+                padding: const EdgeInsets.fromLTRB(300, 50, 300, 0),
+                child: searchBar()),
+            Consumer<ProjectProvider>(
+              builder: (context, projectProvider, _) {
+                // projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
+                // searchTerm == ''
+                //     ? projects = projectProvider.projectList
+                //     : projects = projects;
+                projects = projectProvider.projectList;
+
+                return Container(
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(100, 50, 100, 100),
+                      child: projects.isEmpty
+                          ? const Center(child: CircularProgressIndicator())
+                          : Wrap(
+                              //verificar se aq n fica melhor inkwell
+                              spacing: 50, //coluna
+                              runSpacing: 40, //linha
+                              children: projects
+                                  .map((project) => ProjectCard(
+                                        name: project.name,
+                                        initDate: project.initDate,
+                                        description: project.description,
+                                        score: project.score,
+                                        status: ProjectStatus.iniciado,
+                                      ))
+                                  .toList(),
+                            )),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
