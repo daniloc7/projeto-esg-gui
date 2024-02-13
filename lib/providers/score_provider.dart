@@ -8,6 +8,9 @@ class ScoreProvider extends ChangeNotifier implements ProviderInterface {
   List<ScoreModel> _scoreList = [];
   ScoreController _scoreController = ScoreController();
 
+  List<ScoreModel> get scoreList => _scoreList;
+  ScoreModel get scoreModel => _scoreModel;
+
   @override
   Future<bool> add(String collection, List<Map<String, dynamic>> data) {
     // TODO: implement add
@@ -28,9 +31,10 @@ class ScoreProvider extends ChangeNotifier implements ProviderInterface {
   }
 
   @override
-  Future getAll(String collection) async {
+  Future getAll(String collection, {String? fkProjectId}) async {
     _scoreList.clear();
-    _scoreList = await _scoreController.getAll(collection);
+    _scoreList =
+        await _scoreController.getAll(collection, fkIdProject: fkProjectId);
     notifyListeners();
   }
 
@@ -41,8 +45,8 @@ class ScoreProvider extends ChangeNotifier implements ProviderInterface {
   }
 
   @override
-  Future getOne(String collection, String doc) {
-    // TODO: implement getOne
-    throw UnimplementedError();
+  Future getOne(String collection, String doc) async {
+    _scoreModel = await _scoreController.getOne(collection, doc);
+    notifyListeners();
   }
 }

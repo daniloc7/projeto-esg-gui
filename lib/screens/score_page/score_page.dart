@@ -49,10 +49,13 @@
 
 import 'package:cross_scroll/cross_scroll.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto/utils/first_populate.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:projeto/widgets/custom_button.dart';
 import 'package:projeto/screens/score_page/score.dart';
 
+import '../../models/score_model.dart';
+import '../../providers/score_provider.dart';
 import '../../widgets/custom_list_tile.dart';
 
 class ScorePage extends StatefulWidget {
@@ -64,6 +67,34 @@ class ScorePage extends StatefulWidget {
 
 class _ScorePageState extends State<ScorePage> {
   bool _showSideBar = false;
+  bool _isEmpty = false;
+  late String fkIdProject;
+  final ScoreProvider _scoreProvider = ScoreProvider();
+  List<ScoreModel> _scoreModelList = [];
+
+  void init() async {
+    // Map<String, dynamic> data = {
+    //   'id': '01010101',
+    //   'fkIdProject': '10Twm5nCKOwm6ZMgaVWe',
+    //   'name': 'Sustentabilidade',
+    //   'weight': 3.2,
+    // };
+
+    await _scoreProvider.getAll('scores', fkProjectId: fkIdProject);
+    _scoreModelList = _scoreProvider.scoreList;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final Map<String, dynamic> arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    fkIdProject = arguments['id'];
+
+    init();
+
+    _scoreModelList.isEmpty ? _isEmpty = true : _isEmpty = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,25 +111,83 @@ class _ScorePageState extends State<ScorePage> {
           child: Row(
             children: [
               _showSideBar ? _buildColumn() : Container(),
-              Column(
-                children: [
-                  const Score(name: 'Inovação aberta'),
-                  const Score(name: 'Sustentabilidade'),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.8),
-                      child: CustomButton(name: 'Finalizar')),
-                ],
-              ),
+              // if (_isEmpty) _noData(context),
+              _scoreColumn(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _noData(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Informação'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: const <Widget>[
+            Text(
+                "Por default, é criado os scores 'Inovacao Aberta' e 'Sustentabilidade'."),
+            Text('Por favor, crie novos fatores e indicadores.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Entendi'),
+          onPressed: () {
+            setState(() {
+              _isEmpty = false; // atualiza o estado para esconder a mensagem
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _scoreColumn() {
+    print('teste');
+    return Column(
+      children: <Widget>[
+        ..._scoreModelList
+            .map((score) => Score(
+                  scoreModel: score,
+                ))
+            .toList(),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
+            Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.8),
+                child: CustomButton(name: 'Finalizar')),
+          ],
+        ),
+      ],
+    );
+  }
+  // Widget _scoreColumn() {
+  //   return Column(
+  //     children: [
+  //       Score(name: _scoreModelList[index].name),
+  //       Score(name: 'Inovação aberta'),
+  //       Score(name: 'Sustentabilidade'),
+  //       const SizedBox(
+  //         height: 20,
+  //       ),
+  //       Row(
+  //         children: [
+  //           Container(
+  //               margin: EdgeInsets.only(
+  //                   left: MediaQuery.of(context).size.width * 0.8),
+  //               child: CustomButton(name: 'Finalizar')),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildColumn() {
     return Container(

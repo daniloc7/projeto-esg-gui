@@ -2,7 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/firebase_options.dart';
+import 'package:projeto/providers/factor_provider.dart';
+import 'package:projeto/providers/indicator_provider.dart';
 import 'package:projeto/providers/project_provider.dart';
+import 'package:projeto/providers/score_provider.dart';
+import 'package:projeto/screens/login_page.dart';
 import 'package:projeto/screens/project_page/projects_page.dart';
 import 'package:projeto/screens/score_page/score.dart';
 import 'package:projeto/screens/score_page/score_page.dart';
@@ -31,6 +35,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ProjectProvider>(
           create: (_) => ProjectProvider(),
         ),
+        ChangeNotifierProvider<ScoreProvider>(
+          create: (_) => ScoreProvider(),
+        ),
+        ChangeNotifierProvider<FactorProvider>(
+          create: (_) => FactorProvider(),
+        ),
+        ChangeNotifierProvider<IndicatorProvider>(
+          create: (_) => IndicatorProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -39,8 +52,9 @@ class MyApp extends StatelessWidget {
         // home: LoginPage(),
         theme: ThemeData(primaryColor: Colors.white38, primarySwatch: mycolor),
         routes: {
-          '/': (context) => const ProjectsPage(),
-          // '/': (context) => const ProjectsPage(),
+          '/': (context) => const LoginPage(),
+          '/projects_page': (context) => const ProjectsPage(),
+          '/score_page': (context) => const ScorePage(),
         },
         // home: CadastrarMaterial(),
       ),

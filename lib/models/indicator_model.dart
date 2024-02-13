@@ -1,5 +1,5 @@
 class IndicatorModel {
-  final String id;
+  final String? id;
   final String fkIdFactor;
   late String name;
   late String? description;
@@ -8,11 +8,11 @@ class IndicatorModel {
   late bool isMarked;
 
   IndicatorModel(
-      {required this.id,
+      {this.id,
       required this.fkIdFactor,
       required this.name,
-      this.description,
-      this.essential,
+      this.description = 'description',
+      this.essential = false,
       required this.weight,
       this.isMarked = false});
 

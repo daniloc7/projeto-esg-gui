@@ -2,27 +2,31 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projeto/enums/project_status.dart';
 import 'package:projeto/models/project_model.dart';
 import 'package:projeto/providers/project_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProjectCard extends StatefulWidget {
-  // late ProjectModel project;
-  final String name;
-  late String? description;
-  final DateTime initDate;
-  late ProjectStatus? status;
-  late double? score;
+import '../../utils/pallete.dart';
 
-  ProjectCard(
-      {super.key,
-      // required this.project,
-      required this.name,
-      this.description,
-      required this.initDate,
-      this.status,
-      this.score});
+class ProjectCard extends StatefulWidget {
+  late ProjectModel project;
+  // final String name;
+  // late String? description;
+  // final DateTime initDate;
+  // late ProjectStatus? status;
+  // late double? score;
+
+  ProjectCard({
+    super.key,
+    required this.project,
+    // required this.name,
+    // this.description,
+    // required this.initDate,
+    // this.status,
+    // this.score
+  });
 
   @override
   State<ProjectCard> createState() => _ProjectCardState();
@@ -39,8 +43,8 @@ class _ProjectCardState extends State<ProjectCard> {
           //   border: Border.all(),
           //   borderRadius: BorderRadius.circular(15.0),
           // ),
-          width: 300,
-          height: 280,
+          width: 200,
+          height: 220,
           child: Card(
             elevation: 4.0,
             shape: RoundedRectangleBorder(
@@ -50,7 +54,7 @@ class _ProjectCardState extends State<ProjectCard> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(widget.name),
+                  title: Text(widget.project.name),
                   hoverColor: Colors.white,
                   // subtitle: Text(
                   //   style: const TextStyle(color: Colors.blue),
@@ -61,9 +65,11 @@ class _ProjectCardState extends State<ProjectCard> {
                       PieChartData(
                         sections: [
                           PieChartSectionData(
-                            value: widget.score,
-                            color: Colors.blue,
-                            title: '${widget.score?.toStringAsFixed(2)}%',
+                            value: widget.project.score,
+                            color: mycolor,
+                            // color: Colors.blue,
+                            title:
+                                '${widget.project.score.toStringAsFixed(2)}%',
                             radius: 15,
                             titlePositionPercentageOffset: -1.35,
                             titleStyle: const TextStyle(
@@ -73,7 +79,7 @@ class _ProjectCardState extends State<ProjectCard> {
                             ),
                           ),
                           PieChartSectionData(
-                              value: 100 - widget.score!,
+                              value: 100 - widget.project.score,
                               color: Colors.grey[300]!,
                               radius: 15,
                               showTitle: false),
@@ -94,33 +100,9 @@ class _ProjectCardState extends State<ProjectCard> {
                     //     width: 1.0, // Largura da linha
                     //   ),
                   ),
-                  height: 165,
-                  child: Image.network(
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYf6uUYcGcQ8e9neDNRXMUUXzmUPuUJtel5g&usqp=CAU',
-                    fit: BoxFit.cover,
-                    // fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      }
-                    },
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return const Center(
-                        child: Text('Erro ao carregar a imagem'),
-                      );
-                    },
-                  ),
+                  height: 110,
+                  width: 170,
+                  child: SingleChildScrollView(child: showCardDescription()),
                 ),
                 const SizedBox(
                   height: 10,
@@ -144,12 +126,20 @@ class _ProjectCardState extends State<ProjectCard> {
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   child: const Text("Ver mais"),
+                      // ),
                       TextButton(
-                        onPressed: () {},
-                        child: const Text("Ver mais"),
-                      ),
-                      TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/score_page',
+                            (Route<dynamic> route) => false,
+                            arguments: {
+                              'id': widget.project.id,
+                            },
+                          );
+                        },
                         child: const Text("Acessar"),
                       ),
                     ],
@@ -160,6 +150,59 @@ class _ProjectCardState extends State<ProjectCard> {
           ),
         );
       },
+    );
+  }
+
+  Widget showCardDescription() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(
+            "Descrição:",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "Sem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descriçãoSem descrição",
+            // widget.description ?? "Sem descrição",
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(
+            "Pontuação:",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            widget.project.score != null
+                ? widget.project.score.toStringAsFixed(2)
+                : "Sem pontuação",
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Text(
+            "Data de Início:",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            DateFormat('dd/MM/yyyy').format(widget.project.initDate),
+            style: TextStyle(color: Colors.grey[700]),
+          ),
+        ),
+      ],
     );
   }
 }

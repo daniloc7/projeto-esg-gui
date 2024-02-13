@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class FactorModel {
-  final String id;
+  final String? id;
   final String fkIdScore;
   late String name;
   late String? description;
@@ -13,15 +13,15 @@ class FactorModel {
   late double? weight;
 
   FactorModel({
-    required this.id,
+    this.id,
     required this.fkIdScore,
     required this.name,
-    this.description,
+    this.description = 'Inicial',
     this.isSelected = false,
     this.isMarked = false,
-    this.totalIndicators,
-    this.markedIndicators,
-    this.weight,
+    this.totalIndicators = 0,
+    this.markedIndicators = 0,
+    this.weight = 0,
   });
 
   Map<String, dynamic> toJson() {

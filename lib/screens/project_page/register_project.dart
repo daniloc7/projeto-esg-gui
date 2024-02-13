@@ -152,13 +152,6 @@ class RegisterProjectPage extends StatefulWidget {
   State<RegisterProjectPage> createState() => _RegisterProjectPageState();
 }
 
-// ProjectCard(
-//     name: "Projeto 2",
-//     description: "descricao",
-//     initDate: DateTime.now(),
-//     status: ProjectStatus.iniciado,
-//     score: 5.5),
-
 class _RegisterProjectPageState extends State<RegisterProjectPage> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();

@@ -1,7 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:projeto/interfaces/database_interface.dart';
+import 'package:projeto/controllers/factor_controller.dart';
+import 'package:projeto/interfaces/provider_interface.dart';
 
-class FactorProvider extends ChangeNotifier implements DatabaseInterface {
+import '../models/factor_model.dart';
+
+class FactorProvider extends ChangeNotifier implements ProviderInterface {
+  List<FactorModel> _factorModelList = [];
+  late FactorModel _factorModel;
+  FactorController _factorController = FactorController();
+
+  List<FactorModel> get factorModelList => _factorModelList;
   @override
   Future<bool> add(String collection, List<Map<String, dynamic>> data) {
     // TODO: implement add
@@ -9,10 +17,10 @@ class FactorProvider extends ChangeNotifier implements DatabaseInterface {
   }
 
   @override
-  Future<bool> addOne(String collection, Map<String, dynamic> data,
-      {String? parent}) {
-    // TODO: implement addOne
-    throw UnimplementedError();
+  Future addOne(String collection, Map<String, dynamic> data,
+      {String? parent}) async {
+    await _factorController.addOne(collection, data);
+    notifyListeners();
   }
 
   @override
@@ -22,9 +30,11 @@ class FactorProvider extends ChangeNotifier implements DatabaseInterface {
   }
 
   @override
-  Future getAll(String collection) {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future getAll(String collection, {String? fkIdScore}) async {
+    _factorModelList.clear();
+    _factorModelList =
+        await _factorController.getAll(collection, fkIdScore: fkIdScore);
+    notifyListeners();
   }
 
   @override

@@ -1,50 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/providers/factor_provider.dart';
+import 'package:projeto/utils/first_populate.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/factor_model.dart';
+import '../../models/score_model.dart';
 import '../factor_page/factor.dart';
 
-List<FactorModel> factors = [
-  FactorModel(
-    id: "0",
-    weight: 0.5,
-    name: 'Fator 1',
-    markedIndicators: 15,
-    totalIndicators: 20,
-    fkIdScore: '1',
-  ),
-  FactorModel(
-    id: "1",
-    name: 'Fator 2',
-    markedIndicators: 15,
-    totalIndicators: 20,
-    weight: 0.5,
-    fkIdScore: '1',
-  ),
-  FactorModel(
-    id: "2",
-    weight: .3,
-    name: 'Fator 3',
-    markedIndicators: 15,
-    totalIndicators: 20,
-    fkIdScore: '1',
-  ),
-];
+// List<FactorModel> factors = [
+//   FactorModel(
+//     id: "0",
+//     weight: 0.5,
+//     name: 'Fator 1',
+//     markedIndicators: 15,
+//     totalIndicators: 20,
+//     fkIdScore: '1',
+//   ),
+//   FactorModel(
+//     id: "1",
+//     name: 'Fator 2',
+//     markedIndicators: 15,
+//     totalIndicators: 20,
+//     weight: 0.5,
+//     fkIdScore: '1',
+//   ),
+//   FactorModel(
+//     id: "2",
+//     weight: .3,
+//     name: 'Fator 3',
+//     markedIndicators: 15,
+//     totalIndicators: 20,
+//     fkIdScore: '1',
+//   ),
+// ];
 
-List<Factor> visualFactores = [
-  Factor(factorModel: factors[0]),
-  Factor(factorModel: factors[1]),
-  Factor(factorModel: factors[2])
-];
+// List<Factor> visualFactores = [
+//   Factor(factorModel: factors[0]),
+//   Factor(factorModel: factors[1]),
+//   Factor(factorModel: factors[2])
+// ];
 
 class Score extends StatefulWidget {
-  final String name;
-  const Score({super.key, required this.name});
+  //pegar o id do Score quando vim para esta tela, pegar para o getAllFactorByScoreId
+  final ScoreModel scoreModel;
+  // final String name;
+  const Score({super.key, required this.scoreModel});
 
   @override
   State<Score> createState() => _ScoreState();
 }
 
 class _ScoreState extends State<Score> {
+  List<FactorModel> _factorModelList = [];
+  List<Factor> visualFactores = [];
+  FactorProvider _factorProvider = FactorProvider();
+
+  //eu to pegando um score por vez, e trago todos os factors dele
+  void init() async {
+    //tenho que pegar o id do score
+
+    // print('Score' + widget.scoreModel.id.toString());
+    // FactorModel factorModel =
+    //     FactorModel(fkIdScore: widget.scoreModel.id.toString(), name: 'Teste');
+    // // FactorModel factorModel1 =
+    // //     FactorModel(fkIdScore: widget.scoreModel.id.toString(), name: 'Teste1');
+    // // FactorModel factorModel2 =
+    // //     FactorModel(fkIdScore: widget.scoreModel.id.toString(), name: 'Teste');
+    // await _factorProvider.addOne('factors', factorModel.toJson());
+    // await _factorProvider.addOne('factors', factorModel1.toJson());
+    // await FirstPopulate().init(factorModel: factorModel2);
+
+    await _factorProvider.getAll('factors', fkIdScore: widget.scoreModel.id);
+    _factorModelList = _factorProvider.factorModelList;
+
+    visualFactores = _factorModelList.map((factor) {
+      return Factor(factorModel: factor);
+    }).toList();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _factorProvider = Provider.of<FactorProvider>(context, listen: false);
+    init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,7 +107,7 @@ class _ScoreState extends State<Score> {
                 MediaQuery.of(context).size.height * 0.05),
             // padding: EdgeInsets.only(bottom: 200),
             child: Text(
-              widget.name,
+              widget.scoreModel.name,
               style: const TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 20,

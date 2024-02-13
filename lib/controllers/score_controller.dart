@@ -60,12 +60,16 @@ class ScoreController implements DatabaseInterface {
   }
 
   @override
-  Future getAll(String collection) {
+  Future getAll(String collection, {String? fkIdProject}) {
     return FirebaseFirestore.instance.collection(collection).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          _scoreList.add(ScoreModel.fromJson(docSnapshot.data()));
+          if (docSnapshot.data().containsValue(fkIdProject)) {
+            _scoreList.add(ScoreModel.fromJson(docSnapshot.data()));
+          }
         }
+        return _scoreList;
+        // print("score list" + _scoreList.first.name);
       },
       onError: (e) => print("Erro para buscar os elementos: $e"),
     );

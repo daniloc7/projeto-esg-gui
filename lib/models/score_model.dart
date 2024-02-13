@@ -1,7 +1,7 @@
 //implementar ponderacao
 
 class ScoreModel {
-  final String id;
+  final String? id;
   final String fkIdProject;
   late String name;
   late double? weight;
@@ -11,13 +11,13 @@ class ScoreModel {
   // late List<FactorModel>? factorModel;
 
   ScoreModel({
-    required this.id,
+    this.id,
     required this.fkIdProject,
     required this.name,
     // this.totalFactors,
-    this.weight,
-    this.score,
-    this.isAccepted,
+    this.weight = 0.5,
+    this.score = 0,
+    this.isAccepted = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -27,8 +27,8 @@ class ScoreModel {
       'name': name,
       // 'totalFactors': totalFactors,
       'weight': weight,
-      // 'score': score,
-      // 'isAccepted': isAccepted,
+      'score': score,
+      'isAccepted': isAccepted,
     };
   }
 
@@ -39,8 +39,8 @@ class ScoreModel {
       name: json['name'],
       // totalFactors: json['totalFactors'],
       weight: json['weight'],
-      // score: json['score'],
-      // isAccepted: json['isAccepted'],
+      score: json['score'],
+      isAccepted: json['isAccepted'],
     );
   }
 

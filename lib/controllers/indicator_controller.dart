@@ -5,7 +5,7 @@ import 'package:projeto/interfaces/database_interface.dart';
 import 'package:projeto/models/indicator_model.dart';
 
 class IndicatorController implements DatabaseInterface {
-  List<IndicatorModel> indicatorList = [];
+  List<IndicatorModel> _indicatorModelList = [];
   FirebaseFirestore databaseReference = FirebaseFirestore.instance;
   @override
   Future<bool> add(String collection, List<Map<String, dynamic>> data) async {
@@ -54,12 +54,16 @@ class IndicatorController implements DatabaseInterface {
   }
 
   @override
-  Future getAll(String collection) {
+  Future getAll(String collection, {String? fkIdFactor}) {
     return FirebaseFirestore.instance.collection(collection).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          indicatorList.add(IndicatorModel.fromJson(docSnapshot.data()));
+          if (docSnapshot.data().containsValue(fkIdFactor)) {
+            _indicatorModelList
+                .add(IndicatorModel.fromJson(docSnapshot.data()));
+          }
         }
+        return _indicatorModelList;
       },
       onError: (e) => print("Erro para buscar os elementos: $e"),
     );
@@ -87,7 +91,7 @@ class IndicatorController implements DatabaseInterface {
     // List<IndicatorModel> _indicatorsFk = [];
     int total = 0;
     try {
-      for (var item in indicatorList) {
+      for (var item in _indicatorModelList) {
         if (item.fkIdFactor == fkIdFactor) {
           total += 1;
         }
@@ -102,7 +106,7 @@ class IndicatorController implements DatabaseInterface {
   Future<double> getTotalWeightByFactor(String fkIdFactor) async {
     double totalWeight = 0;
     try {
-      for (var item in indicatorList) {
+      for (var item in _indicatorModelList) {
         if (item.fkIdFactor == fkIdFactor) {
           totalWeight += item.weight;
         }
@@ -111,5 +115,17 @@ class IndicatorController implements DatabaseInterface {
       print(e.toString());
     }
     return totalWeight;
+  }
+
+  //aqui eu adicionei um listener para ficar detectando alteração de dados na collection
+  //document é o ID do indicator, para edit é o update.....
+  Future editIndicator(String collection, String document) async {
+    final docRef = databaseReference.collection(collection).doc(document);
+    docRef.snapshots().listen(
+      (event) {
+        print("current data: ${event.data()}");
+      },
+      onError: (error) => print('Falhou na edição do indicator'),
+    );
   }
 }

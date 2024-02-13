@@ -53,12 +53,15 @@ class FactorController implements DatabaseInterface {
   }
 
   @override
-  Future getAll(String collection) {
+  Future getAll(String collection, {String? fkIdScore}) {
     return FirebaseFirestore.instance.collection(collection).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          _factorList.add(FactorModel.fromJson(docSnapshot.data()));
+          if ((docSnapshot.data().containsValue(fkIdScore))) {
+            _factorList.add(FactorModel.fromJson(docSnapshot.data()));
+          }
         }
+        return _factorList;
       },
       onError: (e) => print("Erro para buscar os elementos: $e"),
     );

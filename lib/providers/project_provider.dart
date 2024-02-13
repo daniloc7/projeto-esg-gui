@@ -34,7 +34,7 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
   }
 
   @override
-  Future getAll(String collection) async {
+  Future getAll(String collection, {String? fkProjectId}) async {
     _projectModelList.clear();
     _projectModelList = await _projectController.getAll(collection);
     notifyListeners();
