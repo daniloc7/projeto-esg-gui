@@ -147,25 +147,27 @@ class _ScorePageState extends State<ScorePage> {
 
   Widget _scoreColumn() {
     print('teste');
-    return Column(
-      children: <Widget>[
-        ..._scoreModelList
-            .map((score) => Score(
-                  scoreModel: score,
-                ))
-            .toList(),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Container(
-                margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.8),
-                child: CustomButton(name: 'Finalizar')),
-          ],
-        ),
-      ],
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          ..._scoreModelList
+              .map((score) => Score(
+                    scoreModel: score,
+                  ))
+              .toList(),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Container(
+                  margin: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.8, 0, 0, 15),
+                  child: CustomButton(name: 'Finalizar')),
+            ],
+          ),
+        ],
+      ),
     );
   }
   // Widget _scoreColumn() {

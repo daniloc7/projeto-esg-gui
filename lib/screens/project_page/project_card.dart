@@ -43,8 +43,8 @@ class _ProjectCardState extends State<ProjectCard> {
           //   border: Border.all(),
           //   borderRadius: BorderRadius.circular(15.0),
           // ),
-          width: 200,
-          height: 220,
+          width: 250,
+          height: 240,
           child: Card(
             elevation: 4.0,
             shape: RoundedRectangleBorder(
@@ -100,8 +100,8 @@ class _ProjectCardState extends State<ProjectCard> {
                     //     width: 1.0, // Largura da linha
                     //   ),
                   ),
-                  height: 110,
-                  width: 170,
+                  height: 120,
+                  width: 200,
                   child: SingleChildScrollView(child: showCardDescription()),
                 ),
                 const SizedBox(

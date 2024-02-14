@@ -362,6 +362,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                   projects = projectProvider.projectList;
 
                   return Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -374,12 +375,12 @@ class _ProjectsPageState extends State<ProjectsPage> {
                         ],
                       ),
                       // color: Color(0xF5F5F9),
-                      padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+                      padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
                       child: projects.isEmpty
                           ? const Center(child: CircularProgressIndicator())
                           : Wrap(
                               //verificar se aq n fica melhor inkwell
-                              spacing: 50, //coluna
+                              spacing: 80, //coluna
                               runSpacing: 40, //linha
                               children: projects
                                   .map((project) => ProjectCard(
