@@ -8,7 +8,6 @@ import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/providers/score_provider.dart';
 import 'package:projeto/screens/login_page.dart';
 import 'package:projeto/screens/project_page/projects_page.dart';
-import 'package:projeto/screens/score_page/score.dart';
 import 'package:projeto/screens/score_page/score_page.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:provider/provider.dart';

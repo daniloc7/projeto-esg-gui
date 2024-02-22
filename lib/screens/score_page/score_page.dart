@@ -1,54 +1,6 @@
-// import 'package:cross_scroll/cross_scroll.dart';
-// import 'package:flutter/material.dart';
-// import 'package:projeto/widgets/score.dart';
-
-// class ScorePage extends StatefulWidget {
-//   const ScorePage({super.key});
-
-//   @override
-//   State<ScorePage> createState() => _ScorePageState();
-// }
-
-// class _ScorePageState extends State<ScorePage> {
-//   bool _showSideBar = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar:
-//             AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
-//         body: Row(
-//           children: [
-//             MouseRegion(
-//               onHover: (event) {
-//                 setState(() {
-//                   _showSideBar =
-//                       event.position.dx <= 50.0 || event.position.dy <= 50.0;
-//                 });
-//               },
-//               child: _showSideBar ? _buildColumn() : Container(),
-//             ),
-//             Column(
-//               children: const [
-//                 Score(name: 'Inovação aberta'),
-//                 Score(name: 'Sustentabilidade'),
-//               ],
-//             ),
-//           ],
-//         ));
-//   }
-
-//   Widget _buildColumn() {
-//     return Column(
-//       children: <Widget>[
-//         Text('Olá, mundo!'),
-//         // Adicione mais widgets à sua coluna aqui
-//       ],
-//     );
-//   }
-// }
-
 import 'package:cross_scroll/cross_scroll.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto/models/factor_model.dart';
 import 'package:projeto/utils/first_populate.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:projeto/widgets/custom_button.dart';
@@ -70,6 +22,7 @@ class _ScorePageState extends State<ScorePage> {
   bool _isEmpty = false;
   late String fkIdProject;
   final ScoreProvider _scoreProvider = ScoreProvider();
+
   List<ScoreModel> _scoreModelList = [];
 
   void init() async {
@@ -79,6 +32,8 @@ class _ScorePageState extends State<ScorePage> {
     //   'name': 'Sustentabilidade',
     //   'weight': 3.2,
     // };
+    // FactorModel _factorModel = FactorModel(fkIdScore: fkIdScore, name: name)
+    // FirstPopulate().init(F)
 
     await _scoreProvider.getAll('scores', fkProjectId: fkIdProject);
     _scoreModelList = _scoreProvider.scoreList;
