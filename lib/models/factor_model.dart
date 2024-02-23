@@ -8,9 +8,9 @@ class FactorModel {
   late bool isSelected;
   late bool isMarked;
   // late List<IndicatorModel>? indicatorsModels;
-  late int? totalIndicators;
-  late int? markedIndicators;
-  late double? weight;
+  late int totalIndicators;
+  late int markedIndicators;
+  late double weight;
 
   FactorModel({
     this.id,

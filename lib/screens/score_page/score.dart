@@ -116,46 +116,52 @@ class _ScoreState extends State<Score> {
               ),
             ),
           ),
-          for (final factor in visualFactores)
-            DragTarget<Factor>(
-              builder: (context, candidateData, rejectedData) {
-                return LongPressDraggable<Factor>(
-                  data: factor,
-                  feedback: Opacity(
-                    opacity: 0.7,
-                    child: factor,
-                  ),
-                  childWhenDragging: factor,
-                  onDragStarted: () {
-                    setState(() {
-                      factor.factorModel.isSelected = true;
-                    });
-                  },
-                  onDragEnd: (details) {
-                    setState(() {
-                      factor.factorModel.isSelected = false;
-                    });
-                  },
-                  onDragCompleted: () {
-                    setState(() {
-                      factor.factorModel.isSelected = false;
-                    });
-                  },
-                  child: factor,
-                );
-              },
-              onWillAccept: (data) => true,
-              //preciso buscar todos os indicadores, dado um factor e mudar junto.
-              onAccept: (data) {
-                final draggedIndex = visualFactores.indexOf(data);
-                final targetIndex = visualFactores.indexOf(factor);
-
-                setState(() {
-                  visualFactores[draggedIndex] = factor;
-                  visualFactores[targetIndex] = data;
-                });
-              },
+          Expanded(
+            child: ListView(
+              children: _factorModelList.map((factor) {
+                return Factor(factorModel: factor);
+              }).toList(),
             ),
+          ),
+          // DragTarget<Factor>(
+          //   builder: (context, candidateData, rejectedData) {
+          //     return LongPressDraggable<Factor>(
+          //       data: factor,
+          //       feedback: Opacity(
+          //         opacity: 0.7,
+          //         child: factor,
+          //       ),
+          //       childWhenDragging: factor,
+          //       onDragStarted: () {
+          //         setState(() {
+          //           factor.factorModel.isSelected = true;
+          //         });
+          //       },
+          //       onDragEnd: (details) {
+          //         setState(() {
+          //           factor.factorModel.isSelected = false;
+          //         });
+          //       },
+          //       onDragCompleted: () {
+          //         setState(() {
+          //           factor.factorModel.isSelected = false;
+          //         });
+          //       },
+          //       child: factor,
+          //     );
+          //   },
+          //   onWillAccept: (data) => true,
+          //   //preciso buscar todos os indicadores, dado um factor e mudar junto.
+          //   onAccept: (data) {
+          //     final draggedIndex = visualFactores.indexOf(data);
+          //     final targetIndex = visualFactores.indexOf(factor);
+
+          //     setState(() {
+          //       visualFactores[draggedIndex] = factor;
+          //       visualFactores[targetIndex] = data;
+          //     });
+          //   },
+          // ),
           IconButton(
               onPressed: () {
                 setState(() {

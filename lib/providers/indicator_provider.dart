@@ -50,10 +50,10 @@ class IndicatorProvider extends ChangeNotifier implements ProviderInterface {
     throw UnimplementedError();
   }
 
-  //tem as informações que vao mudar
-  Future editIndicator(String collection, String document) async {
-    //talvez pensar em retornar algo para o indicatorModel
-    await _indicatorController.editIndicator(collection, document);
+  Future editIndicator(String doc, String newName, String newDescription,
+      double newWeight, bool newEssential) async {
+    await _indicatorController.editIndicator(
+        doc, newName, newDescription, newWeight, newEssential);
     notifyListeners();
   }
 }
