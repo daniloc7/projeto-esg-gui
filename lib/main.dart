@@ -6,9 +6,9 @@ import 'package:projeto/providers/factor_provider.dart';
 import 'package:projeto/providers/indicator_provider.dart';
 import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/providers/score_provider.dart';
+import 'package:projeto/screens/factor_item/factor_form.dart';
 import 'package:projeto/screens/login_page.dart';
 import 'package:projeto/screens/project_page/projects_page.dart';
-import 'package:projeto/screens/score_page/score.dart';
 import 'package:projeto/screens/score_page/score_page.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:provider/provider.dart';
@@ -52,9 +52,10 @@ class MyApp extends StatelessWidget {
         // home: LoginPage(),
         theme: ThemeData(primaryColor: Colors.white38, primarySwatch: mycolor),
         routes: {
-          '/': (context) => const LoginPage(),
-          '/projects_page': (context) => const ProjectsPage(),
-          '/score_page': (context) => const ScorePage(),
+          '/': (context) => FactorForm(fkIdScore: 'sG9Nl4Fyz15SebVpWyCb'),
+          // '/': (context) => const LoginPage(),
+          // '/projects_page': (context) => const ProjectsPage(),
+          // '/score_page': (context) => const ScorePage(),
         },
         // home: CadastrarMaterial(),
       ),

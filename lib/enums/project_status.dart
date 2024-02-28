@@ -1,1 +1,1 @@
-enum ProjectStatus { iniciado, finalizado, sucesso, malsucedido }
+enum ProjectStatus { emProgresso, finalizado, sucesso, falha }

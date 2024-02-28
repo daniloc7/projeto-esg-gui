@@ -380,13 +380,7 @@ class LoginPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage("14.jpeg"),
-                  fit: BoxFit.cover,
-                ),
-                color: Colors.black.withOpacity(0.5),
-              ),
+              color: Colors.grey[200],
             ),
           ),
           Center(

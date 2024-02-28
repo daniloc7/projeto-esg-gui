@@ -16,7 +16,7 @@ class ProjectModel {
     required this.description,
     required this.initDate,
     this.finalDate,
-    this.status = ProjectStatus.iniciado,
+    this.status = ProjectStatus.emProgresso,
     required this.score,
   });
 
@@ -40,7 +40,7 @@ class ProjectModel {
       'description': description,
       'initDate': initDate,
       'finalDate': finalDate?.millisecondsSinceEpoch,
-      'status': status,
+      'status': status.toString(),
       'score': score,
     };
   }

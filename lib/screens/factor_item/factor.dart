@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:projeto/providers/indicator_provider.dart';
-import 'package:projeto/screens/indicator_page/indicator_form.dart';
+import 'package:projeto/screens/indicator_item/indicator_form.dart';
 
-import 'package:projeto/screens/indicator_page/indicator.dart';
+import 'package:projeto/screens/indicator_item/indicator.dart';
 import 'package:projeto/utils/first_populate.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +53,6 @@ class _FactorState extends State<Factor> {
   IndicatorProvider _indicatorProvider = IndicatorProvider();
 
   void init() async {
-    print("ENTROU FACTOR");
     // IndicatorModel indicator1 = IndicatorModel(
     //     fkIdFactor: widget.factorModel.id.toString(),
     //     name: 'Indicator1',

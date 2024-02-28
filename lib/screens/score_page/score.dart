@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/factor_model.dart';
 import '../../models/score_model.dart';
-import '../factor_page/factor.dart';
+import '../factor_item/factor.dart';
+import '../factor_item/factor_form.dart';
 
 // List<FactorModel> factors = [
 //   FactorModel(
@@ -69,13 +70,16 @@ class _ScoreState extends State<Score> {
     // await _factorProvider.addOne('factors', factorModel.toJson());
     // await _factorProvider.addOne('factors', factorModel1.toJson());
     // await FirstPopulate().init(factorModel: factorModel2);
-
     await _factorProvider.getAll('factors', fkIdScore: widget.scoreModel.id);
     _factorModelList = _factorProvider.factorModelList;
+    _factorModelList.forEach((element) {
+      print('nome' + element.fkIdScore);
+    });
+    print("LISTA INTEIRA:" + _factorModelList.length.toString());
 
-    visualFactores = _factorModelList.map((factor) {
-      return Factor(factorModel: factor);
-    }).toList();
+    // visualFactores = _factorModelList.map((factor) {
+    //   return Factor(factorModel: factor);
+    // }).toList();
   }
 
   @override
@@ -116,51 +120,104 @@ class _ScoreState extends State<Score> {
               ),
             ),
           ),
-          for (final factor in visualFactores)
-            DragTarget<Factor>(
-              builder: (context, candidateData, rejectedData) {
-                return LongPressDraggable<Factor>(
-                  data: factor,
-                  feedback: Opacity(
-                    opacity: 0.7,
-                    child: factor,
-                  ),
-                  childWhenDragging: factor,
-                  onDragStarted: () {
-                    setState(() {
-                      factor.factorModel.isSelected = true;
-                    });
-                  },
-                  onDragEnd: (details) {
-                    setState(() {
-                      factor.factorModel.isSelected = false;
-                    });
-                  },
-                  onDragCompleted: () {
-                    setState(() {
-                      factor.factorModel.isSelected = false;
-                    });
-                  },
-                  child: factor,
-                );
-              },
-              onWillAccept: (data) => true,
-              //preciso buscar todos os indicadores, dado um factor e mudar junto.
-              onAccept: (data) {
-                final draggedIndex = visualFactores.indexOf(data);
-                final targetIndex = visualFactores.indexOf(factor);
+          Consumer<FactorProvider>(
+            builder: (context, factorProvider, _) {
+              return Row(
+                children: _factorModelList.map((factorModel) {
+                  final factor = Factor(factorModel: factorModel);
+                  return DragTarget<Factor>(
+                    builder: (context, candidateData, rejectedData) {
+                      return LongPressDraggable<Factor>(
+                        data: factor,
+                        feedback: Opacity(
+                          opacity: 0.7,
+                          child: factor,
+                        ),
+                        childWhenDragging: factor,
+                        onDragStarted: () {
+                          setState(() {
+                            factor.factorModel.isSelected = true;
+                          });
+                        },
+                        onDragEnd: (details) {
+                          setState(() {
+                            factor.factorModel.isSelected = false;
+                          });
+                        },
+                        onDragCompleted: () {
+                          setState(() {
+                            factor.factorModel.isSelected = false;
+                          });
+                        },
+                        child: factor,
+                      );
+                    },
+                    onWillAccept: (data) => true,
+                    onAccept: (data) {
+                      final draggedIndex =
+                          _factorModelList.indexOf(data.factorModel);
+                      final targetIndex =
+                          _factorModelList.indexOf(factor.factorModel);
 
-                setState(() {
-                  visualFactores[draggedIndex] = factor;
-                  visualFactores[targetIndex] = data;
-                });
-              },
-            ),
+                      setState(() {
+                        _factorModelList[draggedIndex] = factor.factorModel;
+                        _factorModelList[targetIndex] = data.factorModel;
+                      });
+                    },
+                  );
+                }).toList(),
+              );
+            },
+          ),
+
+          // for (final factor in visualFactores)
+          //   DragTarget<Factor>(
+          //     builder: (context, candidateData, rejectedData) {
+          //       return LongPressDraggable<Factor>(
+          //         data: factor,
+          //         feedback: Opacity(
+          //           opacity: 0.7,
+          //           child: factor,
+          //         ),
+          //         childWhenDragging: factor,
+          //         onDragStarted: () {
+          //           setState(() {
+          //             factor.factorModel.isSelected = true;
+          //           });
+          //         },
+          //         onDragEnd: (details) {
+          //           setState(() {
+          //             factor.factorModel.isSelected = false;
+          //           });
+          //         },
+          //         onDragCompleted: () {
+          //           setState(() {
+          //             factor.factorModel.isSelected = false;
+          //           });
+          //         },
+          //         child: factor,
+          //       );
+          //     },
+          //     onWillAccept: (data) => true,
+          //     //preciso buscar todos os indicadores, dado um factor e mudar junto.
+          //     onAccept: (data) {
+          //       final draggedIndex = visualFactores.indexOf(data);
+          //       final targetIndex = visualFactores.indexOf(factor);
+
+          //       setState(() {
+          //         visualFactores[draggedIndex] = factor;
+          //         visualFactores[targetIndex] = data;
+          //       });
+          //     },
+          //   ),
           IconButton(
               onPressed: () {
-                setState(() {
-                  visualFactores.remove(visualFactores.first);
-                });
+                showDialog(
+                  context: context,
+                  builder: (context) => FactorForm(
+                    fkIdScore: widget.scoreModel.id,
+                  ),
+                );
               },
               icon: const Icon(Icons.add))
         ],

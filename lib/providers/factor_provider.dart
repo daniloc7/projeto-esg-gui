@@ -35,6 +35,7 @@ class FactorProvider extends ChangeNotifier implements ProviderInterface {
     _factorModelList =
         await _factorController.getAll(collection, fkIdScore: fkIdScore);
     notifyListeners();
+    print('factor_provider:' + _factorModelList.length.toString());
   }
 
   @override
@@ -43,9 +44,14 @@ class FactorProvider extends ChangeNotifier implements ProviderInterface {
     throw UnimplementedError();
   }
 
+  Future setIsSelected(String doc) async {
+    await _factorController.setIsSelected(doc);
+    notifyListeners();
+  }
+
   @override
-  Future getOne(String collection, String doc) {
-    // TODO: implement getOne
-    throw UnimplementedError();
+  Future getOne(String collection, String doc) async {
+    _factorModel = await _factorController.getOne(collection, doc);
+    notifyListeners();
   }
 }

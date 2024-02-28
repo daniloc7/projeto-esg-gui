@@ -189,6 +189,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
       child: Column(
         children: [
           const SizedBox(height: 20),
+          //gestão de projetos, redimensionar o container
           Stack(
             children: [
               Align(
@@ -209,6 +210,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       ),
                     ],
                   ),
+                  //widget gestão de projetos com o icon
                   child: Stack(
                     children: [
                       const Align(
@@ -270,9 +272,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
               ],
             ),
           ),
+          //barra de pesquisa
           Padding(
               padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
               child: searchBar()),
+          //em progresso e finalizados
           Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
             child: Row(
@@ -351,6 +355,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
               ],
             ),
           ),
+          //area dos projetos
           Expanded(
             child: SingleChildScrollView(
               child: Consumer<ProjectProvider>(

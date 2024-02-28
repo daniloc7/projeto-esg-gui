@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/interfaces/database_interface.dart';
 import 'package:projeto/models/project_model.dart';
 
+import '../enums/project_status.dart';
+
 class ProjectController implements DatabaseInterface {
   late FirebaseFirestore databaseReference = FirebaseFirestore.instance;
-  List<ProjectModel> projectList = [];
+  List<ProjectModel> _projectList = [];
 
   @override
   Future<bool> add(String collection, List<Map<String, dynamic>> data) async {
@@ -65,9 +67,9 @@ class ProjectController implements DatabaseInterface {
     return databaseReference.collection(collection).get().then(
       (querySnapshot) {
         for (var docSnapshot in querySnapshot.docs) {
-          projectList.add(ProjectModel.fromJson(docSnapshot.data()));
+          _projectList.add(ProjectModel.fromJson(docSnapshot.data()));
         }
-        return projectList;
+        return _projectList;
       },
       onError: (e) => print("Erro para buscar os elementos: $e"),
     );
@@ -90,20 +92,38 @@ class ProjectController implements DatabaseInterface {
     }
   }
 
-  Future getByNameOrDescription(
-      String collection, String searchTerm, List<ProjectModel> list) async {
-    List<ProjectModel> _newList = [];
-    print('data' + list.length.toString());
+  Future getByFilters(List<dynamic> filters) async {
+    List<ProjectModel> listFilter = [];
+  }
+
+  Future getByNameOrDescription(String collection, String searchTerm) async {
+    List<ProjectModel> newList = [];
+    print('data' + _projectList.length.toString());
     try {
-      for (var item in list) {
+      for (var item in _projectList) {
         print(item.name);
         if (item.name == searchTerm || item.description == searchTerm) {
-          _newList.add(item);
+          newList.add(item);
         }
       }
     } catch (e) {
       print(e.toString());
     }
-    return _newList;
+    return newList;
+  }
+
+  Future getByStatus(ProjectStatus status) async {
+    List<ProjectModel> newList = [];
+    try {
+      for (var item in _projectList) {
+        print(item.name);
+        if (item.status == status.toString()) {
+          newList.add(item);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return newList;
   }
 }

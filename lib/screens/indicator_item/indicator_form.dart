@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/widgets/custom_form_textfield.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../../providers/indicator_provider.dart';
 
 class IndicatorForm extends StatefulWidget {
   const IndicatorForm({super.key});
@@ -10,22 +13,19 @@ class IndicatorForm extends StatefulWidget {
 
 class _IndicatorFormState extends State<IndicatorForm> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _weightController;
+  late final TextEditingController _nameController = TextEditingController();
+  late final TextEditingController _descriptionController =
+      TextEditingController();
+  late final TextEditingController _weightController = TextEditingController();
   bool _essential = false; // Inicialize com um valor padrão
-  late bool _isMarked;
 
-  String? name;
-  String? description;
-  double? weight;
+  String _name = '';
+  String _description = '';
+  double _weight = 0;
 
   @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _weightController = TextEditingController();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
@@ -53,46 +53,81 @@ class _IndicatorFormState extends State<IndicatorForm> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        TextFormField(
-                          controller: _nameController,
-                          decoration: const InputDecoration(labelText: 'Nome'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a name';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            name = value!;
-                          },
+                        CustomTextFormField(
+                          regExp: r'^[a-zA-ZÀ-ú ]*$',
+                          textEditingController: _nameController,
+                          returnValue: _name,
+                          arguments: const [
+                            'Informe o nome',
+                            4,
+                            'Nome muito pequeno!',
+                            'Nome'
+                          ],
                         ),
-                        TextFormField(
-                          controller: _descriptionController,
-                          decoration:
-                              const InputDecoration(labelText: 'Descrição'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a description';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            description = value!;
-                          },
+                        CustomTextFormField(
+                          regExp: r'^[a-zA-ZÀ-ú ]*$',
+                          textEditingController: _descriptionController,
+                          returnValue: _description,
+                          arguments: const [
+                            'Informe a descrição',
+                            8,
+                            'Descrição muito curta',
+                            'Descrição'
+                          ],
                         ),
-                        TextFormField(
-                          controller: _weightController,
-                          decoration: const InputDecoration(labelText: 'Peso'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a weight';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            weight = double.tryParse(value!) ?? 0.0;
-                          },
+                        CustomTextFormField(
+                          regExp: r'^[a-zA-ZÀ-ú ]*$',
+                          textEditingController: _weightController,
+                          returnValue: _weight,
+                          isString: false,
+                          arguments: const [
+                            'Informe o peso',
+                            8,
+                            'Descrição muito curta',
+                            'Descrição',
+                          ],
                         ),
+
+                        // TextFormField(
+                        //   controller: _nameController,
+                        //   decoration: const InputDecoration(labelText: 'Nome'),
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please enter a name';
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onSaved: (value) {
+                        //     _name = value!;
+                        //   },
+                        // ),
+                        // TextFormField(
+                        //   controller: _descriptionController,
+                        //   decoration:
+                        //       const InputDecoration(labelText: 'Descrição'),
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please enter a description';
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onSaved: (value) {
+                        //     description = value!;
+                        //   },
+                        // ),
+                        // TextFormField(
+                        //   controller: _weightController,
+                        //   decoration: const InputDecoration(labelText: 'Peso'),
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please enter a weight';
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onSaved: (value) {
+                        //     weight = double.tryParse(value!) ?? 0.0;
+                        //   },
+                        // ),
                         CheckboxListTile(
                           title: const Text('É essencial?'),
                           value: _essential,

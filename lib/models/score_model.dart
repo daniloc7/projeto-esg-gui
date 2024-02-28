@@ -1,21 +1,21 @@
 //implementar ponderacao
 
 class ScoreModel {
-  final String? id;
+  final String id;
   final String fkIdProject;
   late String name;
-  late double? weight;
-  late double? score;
-  late bool? isAccepted;
+  late double weight;
+  late double score;
+  late bool isAccepted;
   // late int? totalFactors;
   // late List<FactorModel>? factorModel;
 
   ScoreModel({
-    this.id,
+    required this.id,
     required this.fkIdProject,
     required this.name,
     // this.totalFactors,
-    this.weight = 0.5,
+    this.weight = 0,
     this.score = 0,
     this.isAccepted = false,
   });

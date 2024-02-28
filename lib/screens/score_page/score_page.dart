@@ -1,54 +1,7 @@
-// import 'package:cross_scroll/cross_scroll.dart';
-// import 'package:flutter/material.dart';
-// import 'package:projeto/widgets/score.dart';
-
-// class ScorePage extends StatefulWidget {
-//   const ScorePage({super.key});
-
-//   @override
-//   State<ScorePage> createState() => _ScorePageState();
-// }
-
-// class _ScorePageState extends State<ScorePage> {
-//   bool _showSideBar = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar:
-//             AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
-//         body: Row(
-//           children: [
-//             MouseRegion(
-//               onHover: (event) {
-//                 setState(() {
-//                   _showSideBar =
-//                       event.position.dx <= 50.0 || event.position.dy <= 50.0;
-//                 });
-//               },
-//               child: _showSideBar ? _buildColumn() : Container(),
-//             ),
-//             Column(
-//               children: const [
-//                 Score(name: 'Inovação aberta'),
-//                 Score(name: 'Sustentabilidade'),
-//               ],
-//             ),
-//           ],
-//         ));
-//   }
-
-//   Widget _buildColumn() {
-//     return Column(
-//       children: <Widget>[
-//         Text('Olá, mundo!'),
-//         // Adicione mais widgets à sua coluna aqui
-//       ],
-//     );
-//   }
-// }
-
 import 'package:cross_scroll/cross_scroll.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto/controllers/factor_controller.dart';
+import 'package:projeto/models/factor_model.dart';
 import 'package:projeto/utils/first_populate.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:projeto/widgets/custom_button.dart';
@@ -70,6 +23,8 @@ class _ScorePageState extends State<ScorePage> {
   bool _isEmpty = false;
   late String fkIdProject;
   final ScoreProvider _scoreProvider = ScoreProvider();
+  double totalWidth = 0;
+
   List<ScoreModel> _scoreModelList = [];
 
   void init() async {
@@ -79,7 +34,11 @@ class _ScorePageState extends State<ScorePage> {
     //   'name': 'Sustentabilidade',
     //   'weight': 3.2,
     // };
-
+    // FactorModel _factorModel = FactorModel(fkIdScore: fkIdScore, name: name)
+    // FirstPopulate().init(F)
+    // await FactorController()
+    //     .getTotalWeightByScore('factors', 'sG9Nl4Fyz15SebVpWyCb');
+    print('teste');
     await _scoreProvider.getAll('scores', fkProjectId: fkIdProject);
     _scoreModelList = _scoreProvider.scoreList;
   }
@@ -107,6 +66,7 @@ class _ScorePageState extends State<ScorePage> {
       child: Scaffold(
         appBar:
             AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.01),
+        //CrossScroll: eixos axis e vertical são infinitos.
         body: CrossScroll(
           child: Row(
             children: [
@@ -146,28 +106,18 @@ class _ScorePageState extends State<ScorePage> {
   }
 
   Widget _scoreColumn() {
-    print('teste');
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          ..._scoreModelList
-              .map((score) => Score(
-                    scoreModel: score,
-                  ))
-              .toList(),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Container(
-                  margin: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width * 0.8, 0, 0, 15),
-                  child: CustomButton(name: 'Finalizar')),
-            ],
-          ),
-        ],
-      ),
+    totalWidth = MediaQuery.of(context).size.width;
+    //separar esse totalWidth e ir movendo os cards com positioned.
+    // print("totalWidth" + totalWidth.toString());
+    return Column(
+      children: _scoreModelList.map((scoreModel) {
+        return Wrap(
+          children: [
+            Score(scoreModel: scoreModel),
+            const SizedBox(height: 20),
+          ],
+        );
+      }).toList(),
     );
   }
   // Widget _scoreColumn() {

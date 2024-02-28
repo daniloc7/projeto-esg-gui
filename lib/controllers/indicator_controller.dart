@@ -1,18 +1,16 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/interfaces/database_interface.dart';
 import 'package:projeto/models/indicator_model.dart';
 
 class IndicatorController implements DatabaseInterface {
-  List<IndicatorModel> _indicatorModelList = [];
+  final List<IndicatorModel> _indicatorModelList = [];
   FirebaseFirestore databaseReference = FirebaseFirestore.instance;
   @override
   Future<bool> add(String collection, List<Map<String, dynamic>> data) async {
     try {
       for (var item in data) {
         await databaseReference.collection(collection).add(item);
-        print('length data' + data.length.toString());
+        // print('length data' + data.length.toString());
       }
       return true;
     } catch (e) {
@@ -86,6 +84,28 @@ class IndicatorController implements DatabaseInterface {
     }
   }
 
+  Future editIndicator(String doc, String newName, String newDescription,
+      double newWeight, bool newEssential) async {
+    try {
+      //posso pegar primeiro o factor com o id dele, carregar, e depois mudar. (pensar)
+      await databaseReference.collection('indicators').doc(doc).update(
+        {
+          'name': newName,
+          'description': newDescription,
+          'weight': newWeight,
+          'essential': newEssential
+        },
+      );
+      // final data =
+      //     await databaseReference.collection(collection).doc(doc).get();
+      // factor = FactorModel.fromJson(data.data()!);
+      // factor.name = newName;
+      // print(factor.name);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   //
   Future<int> getTotalIndicatorsByFactor(String fkIdFactor) async {
     // List<IndicatorModel> _indicatorsFk = [];
@@ -104,28 +124,28 @@ class IndicatorController implements DatabaseInterface {
   }
 
   Future<double> getTotalWeightByFactor(String fkIdFactor) async {
-    double totalWeight = 0;
+    double weightSum = 0;
     try {
       for (var item in _indicatorModelList) {
         if (item.fkIdFactor == fkIdFactor) {
-          totalWeight += item.weight;
+          weightSum += item.weight;
         }
       }
     } catch (e) {
       print(e.toString());
     }
-    return totalWeight;
+    return weightSum;
   }
 
   //aqui eu adicionei um listener para ficar detectando alteração de dados na collection
   //document é o ID do indicator, para edit é o update.....
-  Future editIndicator(String collection, String document) async {
-    final docRef = databaseReference.collection(collection).doc(document);
-    docRef.snapshots().listen(
-      (event) {
-        print("current data: ${event.data()}");
-      },
-      onError: (error) => print('Falhou na edição do indicator'),
-    );
-  }
+  // Future editIndicator(String collection, String document) async {
+  //   final docRef = databaseReference.collection(collection).doc(document);
+  //   docRef.snapshots().listen(
+  //     (event) {
+  //       print("current data: ${event.data()}");
+  //     },
+  //     onError: (error) => print('Falhou na edição do indicator'),
+  //   );
+  // }
 }
