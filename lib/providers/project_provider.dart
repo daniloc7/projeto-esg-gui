@@ -24,6 +24,7 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
   Future addOne(String collection, Map<String, dynamic> data,
       {String? parent}) async {
     await _projectController.addOne(collection, data);
+    print("Notificar");
     notifyListeners();
   }
 
@@ -56,6 +57,10 @@ class ProjectProvider extends ChangeNotifier implements ProviderInterface {
       String collection, String searchTerm, List<ProjectModel> list) async {
     _projectModelList =
         await _projectController.getByNameOrDescription(collection, searchTerm);
+    notifyListeners();
+  }
+
+  void updateData() {
     notifyListeners();
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:projeto/widgets/custom_form_textfield.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -23,10 +25,10 @@ class _IndicatorFormState extends State<IndicatorForm> {
   String _description = '';
   double _weight = 0;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // }
 
   @override
   void dispose() {

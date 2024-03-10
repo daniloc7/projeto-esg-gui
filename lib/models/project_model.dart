@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/enums/project_status.dart';
 
 class ProjectModel {
-  final String id;
+  final String? id;
   late String name;
   late String description;
   late DateTime initDate;
@@ -11,7 +11,7 @@ class ProjectModel {
   late double score;
 
   ProjectModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.description,
     required this.initDate,
@@ -19,6 +19,13 @@ class ProjectModel {
     this.status = ProjectStatus.emProgresso,
     required this.score,
   });
+
+  static ProjectStatus? _statusFromString(String status) {
+    return ProjectStatus.values.firstWhere(
+      (e) => e.toString() == status,
+      orElse: () => ProjectStatus.emProgresso,
+    );
+  }
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
@@ -29,7 +36,7 @@ class ProjectModel {
         finalDate: json['finalDate'] == null
             ? null
             : (json['finalDate'] as Timestamp).toDate(),
-        status: json['status'],
+        status: _statusFromString(json['status']),
         score: json['score']);
   }
 

@@ -8,6 +8,7 @@ import 'package:projeto/models/project_model.dart';
 import 'package:projeto/providers/factor_provider.dart';
 import 'package:projeto/providers/project_provider.dart';
 import 'package:projeto/screens/project_page/project_card.dart';
+import 'package:projeto/screens/project_page/project_form.dart';
 import 'package:projeto/screens/project_page/register_project.dart';
 import 'package:projeto/utils/pallete.dart';
 import 'package:projeto/widgets/custom_float_button.dart';
@@ -27,7 +28,7 @@ class ProjectsPage extends StatefulWidget {
 class _ProjectsPageState extends State<ProjectsPage> {
   List<ProjectModel> projects = [];
   List<ProjectModel> projects2 = [];
-  ProjectProvider projectProvider = ProjectProvider();
+  ProjectProvider _projectProvider = ProjectProvider();
   FactorProvider factorProvider = FactorProvider();
   final TextEditingController _controller = TextEditingController();
   bool isButton1Pressed = false;
@@ -42,60 +43,70 @@ class _ProjectsPageState extends State<ProjectsPage> {
     //   'fkIdScore': 'FKfGfIMtknOJvvKPEn8D',
     // };
     // await factorProvider.addOne('factors', factor);
-    await projectProvider.getAll('projects');
-    projects = projectProvider.projectList;
+    await _projectProvider.getAll('projects');
+    // projects = _projectProvider.projectList;
     // await projectProvider.getByNameOrDescription(
     //     'projects', 'Projeto B', projects);
-    projects2 = projectProvider.projectList;
+    // projects2 = _projectProvider.projectList;
     // print('projetos' + projects2.length.toString());
   }
 
   @override
-  void initState() {
-    super.initState();
-    projectProvider = Provider.of<ProjectProvider>(context, listen: false);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _projectProvider = Provider.of<ProjectProvider>(context, listen: false);
     instaFactor();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(50),
-      //   child: Padding(
-      //     padding: const EdgeInsets.fromLTRB(300, 10, 300, 10),
-      //     child: Container(
-      //       decoration: BoxDecoration(
-      //         borderRadius: BorderRadius.circular(50),
-      //         color: mycolor,
-      //       ),
-      //       child: AppBar(
-      //         title: const Text('Bem vindo, Danilo!'),
-      //         centerTitle: true,
-      //         backgroundColor: Colors.transparent,
-      //         elevation: 0,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.05),
-      body: Row(
-        children: [
-          Expanded(flex: 1, child: drawer()),
-          Expanded(flex: 5, child: body()),
-        ],
-      ),
-      floatingActionButton: CustomFloatButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const RegisterProjectPage(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+        // appBar: PreferredSize(
+        //   preferredSize: const Size.fromHeight(50),
+        //   child: Padding(
+        //     padding: const EdgeInsets.fromLTRB(300, 10, 300, 10),
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(50),
+        //         color: mycolor,
+        //       ),
+        //       child: AppBar(
+        //         title: const Text('Bem vindo, Danilo!'),
+        //         centerTitle: true,
+        //         backgroundColor: Colors.transparent,
+        //         elevation: 0,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // appBar: AppBar(toolbarHeight: MediaQuery.of(context).size.height * 0.05),
+        //tenho q adicionar o consumer no row.
+        body: Row(
+          children: [
+            Expanded(flex: 1, child: drawer()),
+            Expanded(flex: 5, child: body()),
+          ],
+        ),
+        // floatingActionButton: CustomFloatButton(
+        //   onPressed: () {
+        //     showDialog(
+        //       context: context,
+        //       builder: (context) => const ProjectForm(),
+        //     ).then((_) {
+        //       // Chame um método no Provider que notifica os ouvintes da mudança.
+        //       Provider.of<ProjectProvider>(context, listen: false).updateData();
+        //     });
+        //   },
+        //   child: const Icon(Icons.add),
+        floatingActionButton: CustomFloatButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => const ProjectForm(),
+            );
+          },
+          child: const Icon(Icons.add),
+        ));
   }
 
   Widget drawer() {
@@ -360,12 +371,8 @@ class _ProjectsPageState extends State<ProjectsPage> {
             child: SingleChildScrollView(
               child: Consumer<ProjectProvider>(
                 builder: (context, projectProvider, _) {
-                  // projectProvider.getOne('projects', '0k6zvh1XCxNwHlVF9RXk');
-                  // searchTerm == ''
-                  //     ? projects = projectProvider.projectList
-                  //     : projects = projects;
-                  projects = projectProvider.projectList;
-
+                  // projectProvider = _projectProvider;
+                  _projectProvider = projectProvider;
                   return Container(
                       width: MediaQuery.of(context).size.width * 0.8,
                       decoration: BoxDecoration(
@@ -381,13 +388,13 @@ class _ProjectsPageState extends State<ProjectsPage> {
                       ),
                       // color: Color(0xF5F5F9),
                       padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
-                      child: projects.isEmpty
+                      child: _projectProvider.projectList.isEmpty
                           ? const Center(child: CircularProgressIndicator())
                           : Wrap(
                               //verificar se aq n fica melhor inkwell
                               spacing: 80, //coluna
                               runSpacing: 40, //linha
-                              children: projects
+                              children: _projectProvider.projectList
                                   .map((project) => ProjectCard(
                                         project: project,
                                       ))
